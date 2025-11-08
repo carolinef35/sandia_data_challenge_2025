@@ -1,4 +1,7 @@
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 df = pd.read_csv("AllData_PreEDM_Recycled_RowColIDs_correcteddates.csv")
@@ -46,3 +49,16 @@ df_correct
 
 df_scraps = df_scraps.drop(df_correct.index)
 df_scraps
+print("Used: ", len(df_correct), "| Scraps: ", len(df_scraps))
+
+# Groups rowid and colid by a count
+df_scraps["scrap_count"] = df_scraps.groupby(["RowID", "ColID"])["RowID"].transform("count")
+df_scraps["scrap_count"]
+
+# Plot heatmap
+scrap_map = df_scraps.pivot_table(index = "RowID", columns = "ColID", values = "scrap_count")
+sns.heatmap(scrap_map, cmap = "YlOrRd", annot = True)
+plt.title("Total Count of Recycled 11X11 TA Scraps")
+plt.show()
+
+# Heatmap Statistics
