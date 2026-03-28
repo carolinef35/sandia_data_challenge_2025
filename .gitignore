@@ -1,1 +1,5 @@
+# data
 data/
+
+# misc
+.DS_Store
